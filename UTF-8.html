@@ -1,0 +1,379 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCP-7743 Document - Keter Class</title>
+  <style>
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Import a font that resembles typewriter or official documents */
+    @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap');
+
+    body {
+      /* Use a textured background to simulate paper */
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAIAAACRXR/mAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAABnSURBVHja7M5BDQAwCAMs+P+P4wZ0ICJzW1p7e7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7+3gC5uAASVIbQ+kAAAAASUVORK5CYII='); /* Simple light noise texture */
+      background-color: #f4f1e8; /* Off-white paper color */
+      color: #333; /* Dark text for readability */
+      font-family: 'Courier Prime', monospace; /* Typewriter-like font */
+      line-height: 1.7;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .document-container {
+      background-color: #ffffff; /* White paper background */
+      border: 1px solid #ccc; /* Subtle border */
+      border-radius: 4px; /* Less rounded corners */
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Softer shadow */
+      width: 90%;
+      max-width: 850px; /* Slightly wider */
+      height: 85vh; /* Adjust height */
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative; /* Needed for absolute positioning of the stamp */
+    }
+
+    /* Red Stamp Element */
+    .stamp {
+      position: absolute;
+      top: 40px;
+      right: 30px;
+      width: 120px;
+      height: 120px;
+      border: 4px solid red;
+      border-radius: 50%; /* Circular stamp */
+      color: red;
+      font-family: 'Special Elite', cursive; /* A more stamp-like font */
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      transform: rotate(-15deg); /* Slightly tilted */
+      opacity: 0.6; /* Semi-transparent */
+      pointer-events: none; /* Prevent interaction */
+      z-index: 10; /* Ensure it's above the header but below potential popups */
+      line-height: 1.2;
+    }
+
+    .document-header {
+      background-color: #e8e8e8; /* Light grey header */
+      color: #a00; /* Dark red for SCP style */
+      padding: 15px 20px;
+      border-bottom: 2px solid #a00; /* Red border */
+      text-align: center;
+      font-size: 1.6em;
+      font-weight: bold;
+      font-family: 'Special Elite', cursive; /* Distinct header font */
+      letter-spacing: 1px;
+    }
+
+    .document-content {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 25px 30px; /* More padding */
+    }
+
+    /* Custom Scrollbar for paper feel */
+    .document-content::-webkit-scrollbar {
+      width: 10px;
+    }
+    .document-content::-webkit-scrollbar-track {
+      background: #e0e0e0;
+      border-radius: 5px;
+    }
+    .document-content::-webkit-scrollbar-thumb {
+      background-color: #aaa;
+      border-radius: 5px;
+      border: 2px solid #e0e0e0;
+    }
+    .document-content::-webkit-scrollbar-thumb:hover {
+      background-color: #888;
+    }
+
+    h2 {
+      color: #a00; /* Dark red headings */
+      margin-top: 25px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 6px;
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+
+    h3 {
+      color: #555; /* Darker grey subheadings */
+      margin-top: 18px;
+      margin-bottom: 10px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    p, ul {
+      margin-bottom: 18px;
+    }
+
+    ul {
+      padding-left: 25px;
+      list-style-type: disc; /* Standard list style */
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    strong {
+      color: #000; /* Black for emphasis */
+      font-weight: bold;
+    }
+
+    .appendix-section {
+      margin-top: 30px;
+      border-top: 1px dashed #bbb;
+      padding-top: 20px;
+    }
+
+    .appendix-title {
+      background-color: #f0f0f0; /* Lighter grey for appendix title */
+      padding: 12px 18px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.3s ease;
+      font-weight: bold;
+      color: #444;
+    }
+
+    .appendix-title:hover {
+      background-color: #e5e5e5;
+    }
+
+    .appendix-title::after {
+      content: '+'; /* Plus sign for collapsed */
+      font-size: 1.2em;
+      font-weight: bold;
+      transition: transform 0.3s ease;
+    }
+
+    .appendix-title.open::after {
+      content: '−'; /* Minus sign for expanded */
+      transform: rotate(180deg);
+    }
+
+    .appendix-content {
+      display: none;
+      padding: 20px;
+      background-color: #fafafa; /* Very light grey for appendix content */
+      border: 1px solid #ddd;
+      border-top: none;
+      border-radius: 0 0 3px 3px;
+      margin-top: -1px;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .appendix-content.show {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Specific styling for dates in appendices */
+    .appendix-content p strong:first-child, .appendix-content h3 strong:first-child {
+      display: block; /* Make date stand out */
+      margin-bottom: 5px;
+      color: #666;
+      font-size: 0.95em;
+    }
+
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      .document-container {
+        width: 95%;
+        height: 90vh;
+      }
+      .stamp {
+        width: 90px;
+        height: 90px;
+        font-size: 14px;
+        top: 20px;
+        right: 15px;
+        border-width: 3px;
+      }
+      .document-header {
+        font-size: 1.4em;
+        padding: 12px 15px;
+      }
+      .document-content {
+        padding: 20px;
+      }
+      h2 {
+        font-size: 1.3em;
+      }
+      h3 {
+        font-size: 1.1em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stamp {
+        width: 70px;
+        height: 70px;
+        font-size: 12px;
+        top: 15px;
+        right: 10px;
+      }
+      .document-header {
+        font-size: 1.2em;
+      }
+      .document-content {
+        padding: 15px;
+      }
+      ul {
+        padding-left: 20px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <!-- disable-default-loading -->
+  <div class="document-container">
+    <!-- Red Stamp -->
+    <div class="stamp">
+      TOP SECRET<br>O5 EYES ONLY<br>KETER CLASS
+    </div>
+
+    <div class="document-header">
+      SCP FOUNDATION - SECURE DOCUMENT
+    </div>
+    <div class="document-content">
+      <h2>项目编号：SCP-7743</h2>
+      <p><strong>对象等级</strong>：Keter</p>
+
+      <h2>特殊收容措施</h2>
+      <p>SCP-7743当前寄生于D-7743-1（全名：Andre Nikto），一名具有解离性身份障碍（DID）的个体。D-7743-1被隔离于Site-Ω的深度收容单元（单元-7743-A），该单元伪装为普通公寓，配备卧室、厨房和卫生间，但内壁采用钛合金强化，涂有认知屏蔽涂层，并安装有Scranton现实稳定锚（型号：SRA-09，恒定运行，Hume值维持在0.8-1.2）。单元-7743-A配备认知抑制装置（型号：CSD-22，植入式电磁抑制器），以限制异常人格的活跃。</p>
+      <p>D-7743-1被基金会告知其收容原因为2018年一次机动特遣队行动失败导致的“保护性隔离”，涉及一枚异常文物（SCP-7743-2）的未明效应。D-7743-1的档案信息（包括其现实扭曲能力及SCP-7743的寄生性质）列为O5级机密，任何向D-7743-1透露相关信息的尝试将导致立即处决。D-7743-1的日常活动受监控，允许有限的家务行为（例如烹饪、清洁），但所有物品需经严格检查。</p>
+      <p>D-7743-1需每日接受心理评估，由4级心理学家通过远程视频执行，评估内容不得涉及其异常能力或人格的真实性质。评估旨在监测人格切换并验证记忆真实性。D-7743-1的访谈由D级人员D-7430（一名具有重生不死能力的年轻女性）执行，访谈在单元-7743-A的隔离访谈室（配备防弹玻璃和SRA-09）进行，每次时长不超过30分钟。D-7430的任务是通过陪伴维持D-7743-1的认知稳定，并记录可能的现实扭曲迹象。访谈后，D-7430需接受记忆验证，排除SCP-7743的认知污染。</p>
+      <p>若检测到Hume值波动超过0.5或异常人格活跃超过20秒，单元-7743-A将进入封锁状态，SRA-09提升至最大功率，D-7743-1被立即催眠。若异常人格完全控制D-7743-1，授权执行协议“红隼终结”，通过神经毒气处决D-7743-1。基金会未知SCP-7743在D-7743-1死亡后是否会脱离宿主，任何尝试销毁D-7743-1的行为需经O5议会一致同意。</p>
+      <p>SCP-7743-2（一枚石质文物，尺寸约5cm×3cm，饰有古斯拉夫宗教图腾）被储存在Site-Ω的高价值物品保险库，禁止未经O5级授权的接触。SCP-7743-2被认为是SCP-7743的感染源，销毁可能导致未知后果。</p>
+      <p>所有涉及SCP-7743的记录（包括本文件）需加密存储，访问权限限于O5级人员。任何表现出异常记忆偏差的基金会人员需立即隔离并接受认知重置。</p>
+
+      <h2>描述</h2>
+      <p>SCP-7743是一个非实体现实扭曲异常，寄生于D-7743-1的解离性身份障碍中的一个或多个未知人格（称为“异常人格”）。异常人格的记忆、认知或信念能够改写现实，引发范围从局部到全球的现实重构事件（最高可达ZK级现实失效）。异常人格的记忆具有传染性，可通过语言、眼神接触或物理接触传播，迫使接触者接受虚假记忆，导致认知偏差或行为异常。</p>
+      <h3>D-7743-1的已知人格包括：</h3>
+      <ul>
+        <li><strong>Nikto（“指挥官”）</strong>：寡言沉静，具明显军事训练痕迹，情绪控制极佳，对外界保持高度警觉与防御性，倾向于服从基金会指令，未有越界行为。</li>
+        <li><strong>Andre（“疯狂者”）</strong>：高攻击性与张扬，伴随自言自语、大笑等非理性行为，疑为创伤防御机制衍生的保护型人格。</li>
+        <li><strong>X（“看护者”）</strong>：功能性人格，负责基本生活事务（如饮食、清洁），性格温和稳定，出现频率较低。</li>
+        <li><strong>7743-1-2（“失忆者”）</strong>：疑为最接近SCP-7743核心的人格，表现为极度顺从、语言简洁、缺乏自我记忆，已接受两次A级记忆消除。</li>
+      </ul>
+      <p>基金会推测人格7743-1-2为异常人格的可能性最高，因其记忆空白可能为SCP-7743的伪装，但无法排除其他或所有人格均受感染。D-7743-1的所有人格对SCP-7743的存在毫无察觉，认为自己的记忆和认知真实。基金会未知若D-7743-1意识到其现实扭曲能力将引发何种后果，推测可能导致区域性甚至行星级的现实解构事件（ZK级现实失效）。</p>
+      <p>SCP-7743最早于2018年██月██日在乌拉尔地区由机动特遣队MTF-Theta-9（“红隼”）于一场收容任务中被发现，目标为一件饰有古斯拉夫宗教图腾的石质文物（SCP-7743-2）。任务期间大部分特遣队成员失联，仅D-7743-1存活，于三小时后被发现赤足在现场徘徊，身体无明显损伤，对任务全程无记忆。目前，SCP-7743仅在D-7743-1体内发现寄生痕迹，其宿主为项目的主要收容焦点。</p>
+
+
+      <div class="appendix-section">
+        <div class="appendix-title" data-target="appendix-a">附录 7743-A：感染事件记录</div>
+        <div class="appendix-content" id="appendix-a">
+          <p><strong>日期：2018年██月██日</strong></p>
+          <p><strong>地点：乌拉尔地区，废弃东正教教堂</strong></p>
+          <p><strong>描述：</strong>MTF-Theta-9受命回收一枚异常文物（SCP-7743-2），行动中遭遇未知现实扭曲效应，导致14名特工失联。现场记录显示环境短暂重构为“燃烧的战场”，伴随幻象化的“天使”实体和低频圣歌。D-7743-1（时为特遣队员）于三小时后被发现赤足徘徊，身体无明显损伤，报告称“感到身体被撕裂”，对任务全程无记忆。基金会回收D-7743-1和SCP-7743-2，确认其感染SCP-7743。</p>
+          <p><strong>备注：</strong>D-7743-1在感染前已确诊解离性身份障碍，推测其心理状态可能为SCP-7743选择宿主的条件。</p>
+        </div>
+      </div>
+
+      <div class="appendix-section">
+        <div class="appendix-title" data-target="appendix-b">附录 7743-B：O5-██指令节录</div>
+        <div class="appendix-content" id="appendix-b">
+          <p>“在SCP-7743尚未与宿主实现完全融合前，任何试图分离宿主与异常、或引导其觉醒本体记忆的行为，皆应立即终止。Nikto必须相信，自己仅是任务中接触异常后被保护性收容的幸存者——我们不需要让一个装着核弹的人知道自己就是核弹。”</p>
+          <p><strong>推论：</strong>一旦D-7743-1完全觉知自身为现实扭曲个体，极有可能引发SCP-7743的全面活化，进而导致区域性甚至行星级的现实解struct事件。</p>
+        </div>
+      </div>
+
+      <div class="appendix-section">
+        <div class="appendix-title" data-target="appendix-c">附录 7743-C：现实扭曲案例</div>
+        <div class="appendix-content" id="appendix-c">
+          <h3>案例 7743-C-1：死者复现</h3>
+          <p><strong>日期：2023年██月██日</strong></p>
+          <p><strong>描述：</strong>在一次心理评估中，D-7743-1（Nikto人格）提及已故队友伊戈尔·卡缅斯基（MTF-Theta-9成员，2018年行动中死亡），坚称“伊戈尔没死，他在休息室等我”。评估中断后，Site-Ω休息室出现一实体（外观与卡缅斯基一致），试图与基金会人员交谈，称“任务还没结束”。实体存在17分钟后消散，期间Hume值下降至0.4。D-7743-1对事件无察觉，否认提及卡缅斯基。</p>
+          <p><strong>备注：</strong>事件后，基金会提高了SRA-09的运行功率。</p>
+
+          <h3>案例 7743-C-2：异常食材</h3>
+          <p><strong>日期：2024年██月██日</strong></p>
+          <p><strong>描述：</strong>D-7743-1（X人格）在单元-7743-A的厨房烹饪罗宋汤，宣称使用“冰箱里的牛肉”。基金会记录显示当日未提供牛肉，冰箱内仅含标准配给（面包、蔬菜）。烹饪完成后，厨房内检测到血腥气味，汤内发现未识别的肉类组织（DNA分析失败）。D-7743-1食用后无异常反应，称“味道像妈妈做的”。Hume值波动0.3，SRA-09稳定后恢复正常。D-7743-1对食材来源无察觉。</p>
+          <p><strong>备注：</strong>肉类组织被销毁，冰箱更换。</p>
+
+          <h3>案例 7743-C-3：血腥幻象</h3>
+          <p><strong>日期：2024年██月██日</strong></p>
+          <p><strong>描述：</strong>在一次访谈中，D-7743-1（Andre人格）情绪激动，提及“扎哈耶夫的酷刑”（其创伤来源）。访谈室地板渗出血液，墙壁出现俄文刻痕（翻译为“复仇未完”），D-7430报告看到“断肢爬行”的幻象。事件持续13秒，SRA-09启动后恢复正常。分析显示血液为D-7743-1的DNA，但其身体无伤口。D-7743-1对事件无察觉，称“只是回忆了一下”。</p>
+          <p><strong>备注：</strong>D-7430接受记忆验证，确认未受永久污染。访谈频率调整为每周一次。</p>
+        </div>
+      </div>
+
+       <div class="appendix-section">
+        <div class="appendix-title" data-target="appendix-d">附录 7743-D：D-7430的角色</div>
+        <div class="appendix-content" id="appendix-d">
+           <p>D-7430是一名具有“重生不死”能力的年轻女性D级人员，每次死亡后将会在五米之内重生，并且获得新的身体（及配套衣物）。其具体资料参考D-7430档案。4级及以上人员可获权查看。</p>
+        </div>
+      </div>
+
+      <div class="appendix-section">
+        <div class="appendix-title" data-target="appendix-e">附录 7743-E：心理评估片段</div>
+        <div class="appendix-content" id="appendix-e">
+          <p><strong>日期：2025年██月██日</strong></p>
+          <p><strong>对象：D-7743-1（7743-1-2人格）</strong></p>
+          <p><strong>记录：</strong>“我不知道自己是谁……他们说我是Andre，但我什么都不记得。昨天我试着写字，但手不听使唤。（停顿）我听到有人在唱歌，是教堂的歌吗？”</p>
+          <p><strong>备注：</strong>评估中断，检测到Hume值下降0.2，访谈室空气中出现低频振动。D-7743-1被催眠，SRA-09稳定后恢复正常。</p>
+
+          <p><strong>对象：D-7743-1（Nikto人格）</strong></p>
+          <p><strong>记录：</strong>“你问那次行动？我们完成了任务，炸毁了目标。（冷笑）别问我队友，他们不值得提。……为什么房间这么冷？”</p>
+          <p><strong>备注：</strong>基金会记录显示行动失败，D-7743-1的记忆偏差已记录。访谈室温度无变化，D-7743-1的感知可能为异常前兆。</p>
+        </div>
+      </div>
+
+      <h2>备注</h2>
+      <p>SCP-7743的异常人格尚未确认，基金会推测其完全觉醒可能引发ZK级现实失效。D-7430的访谈为当前识别异常人格的唯一方法，O5议会已授权延长其任务期限，直至制定永久收容方案或确认SCP-7743的脱离后果。</p>
+
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const appendixTitles = document.querySelectorAll('.appendix-title');
+
+      appendixTitles.forEach(title => {
+        title.addEventListener('click', function() {
+          const targetId = this.getAttribute('data-target');
+          const content = document.getElementById(targetId);
+
+          if (content) {
+            this.classList.toggle('open');
+            content.classList.toggle('show');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
